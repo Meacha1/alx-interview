@@ -16,11 +16,10 @@ def canUnlockAll(boxes):
         bool: True if all boxes can be opened, False otherwise.
     """
     num_boxes = len(boxes)
-    unlocked = [False] * num_boxes  # List to track the unlocked
-    unlocked[0] = True  # The first box is initially unlocked
-    keys = boxes[0]  # Start with the keys from the first box
+    unlocked = [False] * num_boxes
+    unlocked[0] = True
+    keys = boxes[0]
 
-    # Iterate through the keys until no more boxes can be unlocked
     while keys:
         key = keys.pop()
         if key < num_boxes and not unlocked[key]:
