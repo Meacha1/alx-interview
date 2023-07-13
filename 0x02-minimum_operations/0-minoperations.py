@@ -19,8 +19,14 @@ def minOperations(n):
     if n <= 1:
         return n
 
-    for i in range(int(math.sqrt(n)) + 1, 0, -1):
-        if n % i == 0:
-            return i + minOperations(int(n / i))
+    operations = 0
+    divisor = 2
 
-    return minOperations(n - 1) + 1
+    while n > 1:
+        if n % divisor == 0:
+            n //= divisor
+            operations += divisor
+        else:
+            divisor += 1
+
+    return operations
