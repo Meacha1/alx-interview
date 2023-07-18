@@ -24,7 +24,8 @@ try:
     for line in sys.stdin:
         parts = line.strip().split(" ")
         if len(parts) == 9:
-            ip, _, _, status, size = parts[0], parts[8], parts[7], int(parts[6]), int(parts[8])
+            ip, _, _, status, size = parts[0], parts[8], parts[7],
+            int(parts[6]), int(parts[8])
             if status in metrics['status_codes']:
                 metrics['total_size'] += size
                 metrics['status_codes'][status] += 1
@@ -41,4 +42,3 @@ finally:
     for code, count in sorted(metrics['status_codes'].items()):
         if count > 0:
             print("{}: {}".format(code, count))
-
