@@ -4,6 +4,7 @@ Script that reads stdin line by line and computes metrics.
 """
 import sys
 
+
 def print_stats(file_size, status_counts):
     """
     Prints the file size and status code counts.
@@ -11,6 +12,7 @@ def print_stats(file_size, status_counts):
     print("File size: {}".format(file_size))
     for status_code, count in sorted(status_counts.items()):
         print("{}: {}".format(status_code, count))
+
 
 def parse_line(line):
     """
@@ -23,6 +25,7 @@ def parse_line(line):
         status_code = int(parts[-2])
         return file_size, status_code
     return None, None
+
 
 def compute_metrics():
     """
@@ -46,6 +49,3 @@ def compute_metrics():
     except KeyboardInterrupt:
         print_stats(total_file_size, status_counts)
         raise
-
-if __name__ == "__main__":
-    compute_metrics()
