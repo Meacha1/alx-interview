@@ -1,51 +1,39 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Script that reads stdin line by line and computes metrics.
 """
+
 import sys
 
-def print_stats(file_size, status_counts):
-    """
-    Prints the file size and status code counts.
-    """
-    print("File size: {}".format(file_size))
-    for status_code, count in sorted(status_counts.items()):
-        print("{}: {}".format(status_code, count))
+total_file_size = 0
+status_codes = {}
 
-def parse_line(line):
-    """
-    Parses a line and extracts the file size and status code.
-    Returns a tuple of (file_size, status_code).
-    """
-    parts = line.split(" ")
-    if len(parts) >= 7:
-        file_size = int(parts[-1])
-        status_code = int(parts[-2])
-        return file_size, status_code
-    return None, None
+try:
+    for count, line in enumerate(sys.stdin, 1):
+        line = line.strip()
+        data = line.split()
+        if len(data) >= 7:
+            file_size = int(data[-1])
+            status_code = data[-2]
 
-def compute_metrics():
-    """
-    Computes the metrics from stdin.
-    """
-    total_file_size = 0
-    status_counts = {}
+            total_file_size += file_size
 
-    try:
-        line_count = 0
-        for line in sys.stdin:
-            file_size, status_code = parse_line(line.strip())
-            if file_size is not None and status_code is not None:
-                total_file_size += file_size
-                status_counts[status_code] = status_counts.get(status_code, 0) + 1
+            if status_code.isdigit():
+                status_code = int(status_code)
+                if status_code in status_codes:
+                    status_codes[status_code] += 1
+                else:
+                    status_codes[status_code] = 1
 
-            line_count += 1
-            if line_count % 10 == 0:
-                print_stats(total_file_size, status_counts)
+        if count % 10 == 0:
+            print("File size: {}".format(total_file_size))
+            for code in sorted(status_codes.keys()):
+                print("{}: {}".format(code, status_codes[code]))
 
-    except KeyboardInterrupt:
-        print_stats(total_file_size, status_counts)
-        raise
+except KeyboardInterrupt:
+    pass
 
-if __name__ == "__main__":
-    compute_metrics()
+finally:
+    print("File size: {}".format(total_file_size))
+    for code in sorted(status_codes.keys()):
+        print("{}: {}".format(code, status_codes[code]))
