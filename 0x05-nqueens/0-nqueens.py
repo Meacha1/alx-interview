@@ -2,6 +2,7 @@
 '''Method to check if a given data set represents a valid UTF-8 encoding'''
 import sys
 
+
 def is_safe(board, row, col, N):
     # Check if there is a queen in the same column
     for i in range(row):
@@ -20,6 +21,7 @@ def is_safe(board, row, col, N):
 
     return True
 
+
 def solve_nqueens(N):
     if not isinstance(N, int):
         print("N must be a number")
@@ -34,7 +36,8 @@ def solve_nqueens(N):
 
     def backtrack(row):
         if row == N:
-            solutions.append([[i, j] for i in range(N) for j in range(N) if board[i][j] == 1])
+            solutions.append([[i, j] for i in range(N)
+                              for j in range(N) if board[i][j] == 1])
             return
 
         for col in range(N):
@@ -46,9 +49,11 @@ def solve_nqueens(N):
     backtrack(0)
     return solutions
 
+
 def print_solutions(solutions):
     for solution in solutions:
         print(solution)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
