@@ -1,43 +1,35 @@
 #!/usr/bin/python3
 import sys
 
-def print_board(board):
-    """
-    Prints the board
-    """
-    for row in board:
-        print(" ".join(row))
+def print_chessboard(queens):
+  """Print the chessboard with queens in their positions"""
+  for i in range(len(queens)):
+    for j in range(len(queens)):
+      if queens[i] == j:
+        print("Q", end="")
+      else:
+        print("-", end="")
+    print()
 
-def is_valid(board, row, col):
-    """
-    Checks if the position is valid for a queen
-    """
-    # Check column
-    for i in range(len(board)):
-        if board[i][col] == "Q":
-            return False
+def is_valid(queens, row, col):
+  """Check if a queen can be placed on the chessboard"""
+  for i in range(row):
+    if queens[i] == col or abs(queens[i] - col) == row - i:
+      return False
+  return True
+      
+def solve_nqueens(n):
+  queens = [-1 for i in range(n)]
+  
+  def backtrack(row):
+    if row == n:
+      print_chessboard(queens)
+      return
     
-    # Check diagonal
-    for i, j in zip(range(row,-1,-1), range(col,-1,-1)):
-        if board[i][j] == "Q":
-            return False
-    
-    for i, j in zip(range(row,len(board)), range(col,-1,-1)):
-        if board[i][j] == "Q":
-            return False
+    for col in range(n):
+      if is_valid(queens, row, col):
+        queens[row] = col
+        backtrack(row+1)
 
-    return True
-
-def solve_queens(board, row):
-    """
-    Solves the problem recursively
-    """
-    if row == len(board):
-        print_board(board)
-        return
-    
-    for col in range(len(board)):
-        if is_valid(board, row, col):
-            board[row][col] = "Q" 
-            solve_queens(board, row+1)
-            board[row][col] = "-" 
+  backtrack(0)
+  
