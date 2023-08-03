@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+'''Method to check if a given data set represents a valid UTF-8 encoding'''
 import sys
 
 def print_chessboard(queens):
