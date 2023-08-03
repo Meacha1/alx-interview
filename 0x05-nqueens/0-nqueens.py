@@ -1,53 +1,60 @@
 #!/usr/bin/python3
-'''Method to check if a given data set represents a valid UTF-8 encoding'''
 import sys
 
-def print_chessboard(queens):
-  """Print the chessboard with queens in their positions"""
-  for i in range(len(queens)):
-    for j in range(len(queens)):
-      if queens[i] == j:
-        print("Q", end="")
-      else:
-        print("-", end="")
-    print()
+def is_safe(board, row, col, N):
+    # Check if there is a queen in the current row on the left side
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
 
-def is_valid(queens, row, col):
-  """Check if a queen can be placed on the chessboard"""
-  for i in range(row):
-    if queens[i] == col or abs(queens[i] - col) == row - i:
-      return False
-  return True
-      
-def solve_nqueens(n):
-  queens = [-1 for i in range(n)]
-  
-  def backtrack(row):
-    if row == n:
-      print_chessboard(queens)
-      return
-    
-    for col in range(n):
-      if is_valid(queens, row, col):
-        queens[row] = col
-        backtrack(row+1)
+    # Check upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
 
-  backtrack(0)
+    # Check lower diagonal on the left side
+    for i, j in zip(range(row, N), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+def solve_nqueens(N):
+    if N < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    solutions = []
+
+    def backtrack(col):
+        if col == N:
+            solutions.append([[i, row] for i, row in enumerate(board) if 1 in row])
+            return
+
+        for row in range(N):
+            if is_safe(board, row, col, N):
+                board[row][col] = 1
+                backtrack(col + 1)
+                board[row][col] = 0
+
+    backtrack(0)
+    return solutions
+
+def print_solutions(N):
+    solutions = solve_nqueens(N)
+    for solution in solutions:
+        print(solution)
 
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
-    print("Usage: nqueens N")
-    sys.exit(1)
-  
-  n = 0
-  try:
-    n = int(sys.argv[1])  
-  except:
-    print("N must be a number")
-    sys.exit(1)  
-  
-  if n < 4:
-    print("N must be at least 4")
-    sys.exit(1)
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
 
-  solve_nqueens(n)
+    try:
+        N = int(sys.argv[1])
+    except ValueError:
+        print("N must be a number")
+        sys.exit(1)
+
+    print_solutions(N)
