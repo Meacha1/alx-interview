@@ -7,7 +7,7 @@ if (process.argv.length !== 3) {
   process.exit(1);
 }
 
-const movieId = process.argv[1];
+const movieId = process.argv[2];
 
 const baseUrl = 'https://swapi.dev/api/';
 const filmsEndpoint = 'films/';
