@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Prime game module.
+"""
 
 def is_prime(n):
     if n <= 1:
